@@ -11,16 +11,25 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    runtimeOnly {
+        exclude module: 'logback-classic'
+    }
+}
+
 dependencies {
     implementation platform('io.grpc:grpc-bom:1.51.0')
+    implementation platform('org.apache.logging.log4j:log4j-bom:2.19.0')
+
     implementation 'io.micronaut.grpc:micronaut-grpc-runtime'
     implementation 'io.grpc:grpc-services'
 
-    runtimeOnly 'ch.qos.logback:logback-classic'
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
+    //runtimeOnly 'ch.qos.logback:logback-classic'
 }
 
 application {
-    mainClass.set("helloworld.grpc.Application")
+    mainClass = "helloworld.grpc.Application"
 }
 
 java {
