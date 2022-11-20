@@ -11,11 +11,13 @@ repositories {
     mavenCentral()
 }
 
+/* Un-comment this  to use log4j2 as the backend
 configurations {
     runtimeOnly {
         exclude module: 'logback-classic'
     }
 }
+*/
 
 dependencies {
     implementation platform('io.grpc:grpc-bom:1.51.0')
@@ -24,8 +26,11 @@ dependencies {
     implementation 'io.micronaut.grpc:micronaut-grpc-runtime'
     implementation 'io.grpc:grpc-services'
 
-    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
-    //runtimeOnly 'ch.qos.logback:logback-classic'
+    // runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
+    runtimeOnly 'ch.qos.logback:logback-classic'
+
+    compileOnly 'org.apache.logging.log4j:log4j-to-slf4j'
+    compileOnly 'org.graalvm.nativeimage:svm'
 }
 
 application {
@@ -56,7 +61,18 @@ protobuf {
     }
 }
 
+graalvmNative {
+    toolchainDetection = false
+    binaries {
+        main {
+            imageName.set('mn-graalvm-application')
+            buildArgs.add('--verbose')
+        }
+    }
+}
+
 micronaut {
+    runtime("netty")
     testRuntime("junit5")
     processing {
         incremental(true)
