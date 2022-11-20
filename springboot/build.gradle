@@ -6,7 +6,6 @@ plugins {
     id 'com.google.protobuf' version '0.8.19'
 }
 
-
 version = "0.1"
 group = "helloworld.grpc"
 
@@ -51,7 +50,6 @@ dependencies {
     newrelic 'com.newrelic.agent.java:newrelic-agent:7.11.1'
 }
 
-
 bootRun {
     afterEvaluate {
         jvmArgs = [
@@ -65,4 +63,3 @@ bootRun {
         ]
     }
 }
-

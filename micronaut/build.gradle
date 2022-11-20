@@ -22,6 +22,7 @@ dependencies {
 application {
     mainClass.set("helloworld.grpc.Application")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
@@ -45,6 +46,7 @@ protobuf {
         all()*.plugins { grpc {} }
     }
 }
+
 micronaut {
     testRuntime("junit5")
     processing {
@@ -72,6 +74,3 @@ run {
             "NEW_RELIC_ERROR_COLLECTOR_EXPECTED_STATUS_CODES":"3,9,400-499"
     ]
 }
-
-
-
