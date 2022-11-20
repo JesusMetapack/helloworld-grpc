@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "helloworld.grpc";
+option java_outer_classname = "HelloworldGrpc";
+option objc_class_prefix = "HLW";
+
+package helloworld.grpc;
+
+service HelloworldGrpcService {
+  rpc send (HelloworldGrpcRequest) returns (HelloworldGrpcReply) {}
+}
+
+message HelloworldGrpcRequest {
+  string name = 1;
+}
+
+message HelloworldGrpcReply {
+  string message = 1;
+}

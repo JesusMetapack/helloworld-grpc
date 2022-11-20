@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: helloworldGrpc
+
+grpc:
+  port: 50051
+  enable-reflection: false
+

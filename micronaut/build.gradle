@@ -1,0 +1,77 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'io.micronaut.application' version '3.6.5'
+    id 'com.google.protobuf' version '0.8.19'
+}
+
+version = "0.1"
+group = "helloworld.grpc"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform('io.grpc:grpc-bom:1.51.0')
+    implementation 'io.micronaut.grpc:micronaut-grpc-runtime'
+    implementation 'io.grpc:grpc-services'
+
+    runtimeOnly 'ch.qos.logback:logback-classic'
+}
+
+application {
+    mainClass.set("helloworld.grpc.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/source/proto/main/grpc")
+            srcDirs("build/generated/source/proto/main/java")
+        }
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.21.7" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.51.0" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("helloworld.grpc.*")
+    }
+}
+
+configurations {
+    newrelic
+}
+
+dependencies {
+    newrelic 'com.newrelic.agent.java:newrelic-agent:7.11.1'
+}
+
+run {
+    jvmArgs = [
+            "-javaagent:${configurations.newrelic.singleFile}"
+    ]
+    environment = [
+            "NEW_RELIC_APP_NAME": "local_" + project.name + "_mn",
+            "NEW_RELIC_LICENSE_KEY": project.properties["newrelic_license_key"],
+            "NEW_RELIC_DISTRIBUTED_TRACING_ENABLED": "true",
+            "NEW_RELIC_ERROR_COLLECTOR_EXPECTED_STATUS_CODES":"3,9,400-499"
+    ]
+}
+
+
+

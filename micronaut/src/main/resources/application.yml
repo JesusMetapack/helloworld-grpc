@@ -1,0 +1,10 @@
+micronaut:
+  application:
+    name: helloworldGrpc
+
+grpc:
+  server:
+    enabled: true
+    reflection:
+      enabled: false
+
